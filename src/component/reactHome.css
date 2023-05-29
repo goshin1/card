@@ -1,0 +1,125 @@
+#reactHome{
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    background-image: url(../imgs/back.png);
+    user-select: none;
+    position: absolute;
+}
+
+#stage{
+    margin: 20px auto;
+    width: 1340px;
+    height: 400px;
+    background-color: white;
+    border: 15px solid #202020;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+#pointBar{
+    float: left;
+    width: 50px;
+    height: 400px;
+    background-color: red;
+}
+
+#monster{
+    margin: 50px auto;
+    width: 300px;
+    height: 300px;
+    background-size: 300px;
+    border: 5px solid #202020;
+}
+
+
+#cardHome{
+    text-align: center;
+    margin: 0 auto;
+    width: 1340px;
+    height: 680px;
+    user-select: none;
+    position: relative;
+    background-color: rgb(219, 0, 0);
+    border: 15px solid #202020;
+    border-radius: 30px;
+}
+
+#cardBtns{
+    margin: 30px 5px 30px 25px;
+    width: 200px;
+    height: 150px;
+    float: left;
+}
+
+#turnBtn{
+    width: 200px;
+    height: 150px;
+    float: left;
+    background-image: url(../imgs/turnBtn.png);
+    transition: all 0.2s;
+}
+
+#turnBtn:active{
+    background-image: url(../imgs/turnBtnPress.png);
+}
+
+.cardPosition{
+    margin: 30px 10px;
+    float: left;
+    width: 200px;
+    height: 100%;
+    min-height: 100px;
+    background-image: url(../imgs/dropSection.png);
+    background-repeat: no-repeat;
+    z-index: 100;
+}
+
+.cardPosition > div{
+    margin: -250px auto;
+    box-shadow: 0px 8px 5px rgba(0,0,0,0.3);
+}
+
+.cardPosition > div:first-child{
+    margin: 80px auto 0px;
+}
+
+#cards{
+    margin: 30px 5px;
+    width: 200px;
+    height: 150px;
+    float: left;
+}
+
+.deck{
+    width: 200px;
+    height: 300px;
+    background-image: url(../imgs/deckSection.png);
+    float: right;
+    text-align: center;
+}
+
+.storage{
+    margin-top: 20px;
+    width: 200px;
+    height: 300px;
+    background-image: url(../imgs/storageSection.png);
+    float: right;
+    text-align: center;
+}
+
+.deck > div, .storage > div{
+    margin-top: 10px;
+    margin-left: 10px;
+    position: absolute;
+}
+
+.trump{
+    margin-top: 20px;
+    width: 180px;
+    height: 280px;
+    background-size: 180px 280px; 
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.2s;
+}

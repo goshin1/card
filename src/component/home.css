@@ -1,0 +1,29 @@
+#home{
+    text-align: center;
+    margin: 0 auto;
+    width: 1100px;
+    height: 100%;
+    background-color: aqua;
+    user-select: none;
+}
+
+.dropzone{
+    
+    width: 200px;
+    height: 100px;
+    background-color: red;
+    float: left;
+}
+
+.dropzone.dragover{
+    background-color: rgb(110, 0, 0);
+}
+
+.card{
+    margin-top: 10px;
+    width: 180px;
+    height: 200px;
+    background-color: orange;
+    position: absolute;
+}
+
