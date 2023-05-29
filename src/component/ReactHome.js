@@ -169,7 +169,7 @@ export default function ReactHome(){
                     }
                 }}></div>
                 <div id='supplyBtn'>
-
+                    
                 </div>
             </div>
             <div className="dropcard cardPosition" id='firstP' onDrop={(event)=>{
