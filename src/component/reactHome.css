@@ -63,13 +63,7 @@
     animation: 5s timeMove infinite;
 }
 
-@keyframes timeMove {
-    0% {margin-left: 0px;}
-    25% {margin-left: -335px;}
-    50% {margin-left: -670px;}
-    75% {margin-left: -1005px;}
-    100% {margin-left: -1340px;}
-}
+
 
 
 #monster{

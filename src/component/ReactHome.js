@@ -12,16 +12,20 @@ export default function ReactHome(){
     const [draw, setDraw] = useState(0);
     const [score, setScore] = useState(0);
     const [turn, setTurn] = useState(0);
+
+    const [dragged, setDragged] = useState()
     const [parent, setParent] = useState();
 
-    let dragged;
+    // let dragged;
 
     document.addEventListener('drag', event=>{
         
     })
 
     document.addEventListener('dragstart', event=>{
-        dragged = event.target;
+        // dragged = event.target;
+        setDragged(event.target)
+        setParent(event.target.parentNode)
         event.target.classList.add('dragging');
     })
 
@@ -170,15 +174,15 @@ export default function ReactHome(){
     }
     const [time, setTime] = useState(0);
     const [count, setCount] = useState(0);
-    // useInterval(()=>{
-    //     setTime(time + 1);
-    // },100)
+    useInterval(()=>{
+        setTime(time + 1);
+    },1000)
 
-    // if(time > 300){
-    //     setTime(0)
-    //     setDraw(0)
-    //     setCount(count + 1);
-    // }
+    if(time > 30){
+        setTime(0)
+        setDraw(0)
+        setCount(count + 1);
+    }
 
     return <div id="reactHome">
         <div id='stage'>
@@ -193,7 +197,7 @@ export default function ReactHome(){
             </div>
         </div>
         <div id='timeBox'>
-            <div id='timeBar' style={ {marginLeft : `${0 - (time * 0.34) * 13.4}px`}}></div>
+            <div id='timeBar' style={ {marginLeft : `${0 - (time * 3.4) * 13.4}px`}}></div>
         </div>
         <div id='cardHome'>
             <div id='cardBtns'>
@@ -231,20 +235,21 @@ export default function ReactHome(){
                 <div className="dropcard" id='trashPosition' onDrop={(event) => {
                     event.preventDefault();
                     setDraw(draw + 1);
-                    let parent = dragged.parentNode.getAttribute('id');
+                    let parentId = parent.getAttribute('id');
                     if (event.target.classList.contains("dropcard") && draw < 5) {
                         event.target.classList.remove("dragover")
-                        if(dragged.parentNode.id === ''){
+                        if(parentId === null){
                             setCards(cards.filter(e => e.props.id !== dragged.id))
                         }
                         
-                        if(parent !== null){
-                            dispatch(deleteCard({position : positionD[parent], value : dragged.getAttribute('name')}));
+                        if(parentId !== null){
+                            dispatch(deleteCard({position : positionD[parentId], value : dragged.getAttribute('name')}));
                         }
                         dispatch(addCard({position : 4, value :dragged.getAttribute('name'), img : `${dragged.style.backgroundImage}`}));
                         setDraw(draw + 1);
                     }
-
+                    setDragged(null);
+                    setParent(null);
                 }}></div>
             </div>
             <div className="dropcard cardPosition" id='firstP' onDrop={(event)=>{
@@ -253,15 +258,15 @@ export default function ReactHome(){
                     return
                 }
 
-                let parent = dragged.parentNode.getAttribute('id');
+                let parentId = parent.getAttribute('id');
                 if (event.target.classList.contains("dropcard") && draw < 5) {
                     event.target.classList.remove("dragover")
-                    if(dragged.parentNode.id === ''){
+                    if(parentId === null){
                         setCards(cards.filter(e => e.props.id !== dragged.id))
                     }
                     
-                    if(parent !== null){
-                        dispatch(deleteCard({position : positionD[parent], value : dragged.getAttribute('name')}));
+                    if(parentId !== null){
+                        dispatch(deleteCard({position : positionD[parentId], value : dragged.getAttribute('name')}));
                     }
                     dispatch(addCard({position : 0, value :dragged.getAttribute('name'), img : `${dragged.style.backgroundImage}`}));
                     setDraw(draw + 1);
@@ -274,13 +279,13 @@ export default function ReactHome(){
                 if(trumps[1].length >= 10){
                     return
                 }
-                let parent = dragged.parentNode.getAttribute('id');
+                let parentId = parent.getAttribute('id');
                 if (event.target.classList.contains("dropcard") && draw < 5) {
                     event.target.classList.remove("dragover")
-                    if(dragged.parentNode.id === ''){
+                    if(parentId === null){
                         setCards(cards.filter(e => e.props.id !== dragged.id))
                     }
-                    if(parent !== null){
+                    if(parentId !== null){
                         dispatch(deleteCard({position : positionD[parent], value :dragged.getAttribute('name')}));
                     }
                     dispatch(addCard({position : 1, value :dragged.getAttribute('name'), img : `${dragged.style.backgroundImage}`}));
@@ -294,13 +299,13 @@ export default function ReactHome(){
                 if(trumps[2].length >= 10){
                     return
                 }
-                let parent = dragged.parentNode.getAttribute('id');
+                let parentId = parent.getAttribute('id');
                 if (event.target.classList.contains("dropcard") && draw < 5) {
                     event.target.classList.remove("dragover")
-                    if(dragged.parentNode.id === ''){
+                    if(parentId === null){
                         setCards(cards.filter(e => e.props.id !== dragged.id))
                     }
-                    if(parent !== null){
+                    if(parentId !== null){
                         dispatch(deleteCard({position : positionD[parent], value :dragged.getAttribute('name')}));
                     }
                     dispatch(addCard({position : 2, value :dragged.getAttribute('name'), img : `${dragged.style.backgroundImage}`}));
@@ -314,13 +319,13 @@ export default function ReactHome(){
                 if(trumps[3].length >= 10){
                     return
                 }
-                let parent = dragged.parentNode.getAttribute('id');
+                let parentId = parent.getAttribute('id');
                 if (event.target.classList.contains("dropcard") && draw < 5) {
                     event.target.classList.remove("dragover")
-                    if(dragged.parentNode.id === ''){
+                    if(parentId === null){
                         setCards(cards.filter(e => e.props.id !== dragged.id))
                     }
-                    if(parent !== null){
+                    if(parentId !== null){
                         dispatch(deleteCard({position : positionD[parent], value :dragged.getAttribute('name')}));
                     }
                     dispatch(addCard({position : 3, value :dragged.getAttribute('name'), img : `${dragged.style.backgroundImage}`}));
