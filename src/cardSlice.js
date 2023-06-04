@@ -53,9 +53,12 @@ export const cardSlice = createSlice({
         addCard : (state, action) => {
             let add = action.payload;
             let temp = [...state.cardDeck]
-            
-            temp[add.position].push([add.img, add.value])
-            state.cardDeck = temp;
+            if(add.position !== 4){
+                temp[add.position].push([add.img, add.value])
+                state.cardDeck = temp;
+            }else{
+                state.storage = [ ...state.storage, [add.img, add.value] ]
+            }
         },
         deleteCard : (state, action) => {
             let del = action.payload;
@@ -75,6 +78,15 @@ export const cardSlice = createSlice({
         },
         addStorage : (state, action) => {
             state.storage = [ ...state.storage, ...action.payload ];
+        },
+        clearStorage : (state, action) => {
+            state.storage = [];
+        },
+        shuffleDeck : (state, action) => {
+            for(let i = 0; i < 4; i++){
+                state.cardDeck[i].sort(() => Math.random() - 0.5);
+            }
+            state.cardDeck = [ ...state.cardDeck ]
         }
     }
 })
@@ -85,3 +97,5 @@ export const {deleteCard} = cardSlice.actions;
 export const {setCardDeck} = cardSlice.actions;
 export const {setPositionCardDeck} = cardSlice.actions;
 export const {addStorage} = cardSlice.actions;
+export const {clearStorage} = cardSlice.actions;
+export const {shuffleDeck} = cardSlice.actions;

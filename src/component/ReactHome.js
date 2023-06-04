@@ -1,7 +1,7 @@
 import './reactHome.css'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { addCard, deleteCard, setPositionCardDeck, addStorage } from "../cardSlice";
+import { addCard, deleteCard, setPositionCardDeck, addStorage, clearStorage, shuffleDeck } from "../cardSlice";
 import uuid from 'react-uuid'
 
 export default function ReactHome(){
@@ -11,11 +11,9 @@ export default function ReactHome(){
     const storage = useSelector(state => state.card.storage);
     const [draw, setDraw] = useState(0);
     const [score, setScore] = useState(0);
-    const [firstP, setFirstP] = useState([]);
-    const [secondP, setSecondP] = useState([]);
-    const [threeP, setThreeP] = useState([]);
-    const [fourP, setFourP] = useState([]);
-    
+    const [turn, setTurn] = useState(0);
+    const [parent, setParent] = useState();
+
     let dragged;
 
     document.addEventListener('drag', event=>{
@@ -50,7 +48,6 @@ export default function ReactHome(){
     // 판 이미지 제작, 버튼 클릭 시 규칙 파악하기
     const cardCheck = () => {
         let straight = '12345jqk|kqj54321';
-        let pArray = ['firstP', 'secondP', 'threeP', 'fourP']
         for(let a = 0; a < 4; a++){
             if(cardDeck[a].length >= 5){
                 let best = 0;
@@ -71,17 +68,20 @@ export default function ReactHome(){
                         before = temp[0];
                     })
                     type = new Set(type.slice(0, type.length - 1).split(','))
+                    let nums = num.split('')
+                    nums.sort()
+                    nums = new Set(nums)
                     let temp = new Set(num.split(''))
-                    if((type.size === 1 || type.size === 2 && type.has('joker')) && best <= 1){
+                    if((type.size === 1 || (type.size === 2 && type.has('*')) || (nums.size === 2 && joker)) && best <= 1){
                         best = 1
                         bestP = i;
-                    } else if(straight.includes(num) && best <= 2){
+                    } if(straight.includes(num) && best <= 2){
                         best = 2
                         bestP = i;
-                    } else if(straight.includes(num) && type.length === 1  && best <= 3){
+                    } if(straight.includes(num) && type.length === 1  && best <= 3){
                         best = 3
                         bestP = i;
-                    } else if(num.includes('1') && num.includes('2') && joker && temp.size === 2 && best <= 6) {
+                    } if(num.includes('1') && num.includes('2') && joker && temp.size === 2 && best <= 6) {
                         best = 6
                         bestP = i;
                     }
@@ -150,15 +150,50 @@ export default function ReactHome(){
         )
     }
     const [cards, setCards] = useState([ ...temp ]);
-    
+
+    const useInterval = (callback, delay) => {
+        const savedCallback = useRef(); 
+
+        useEffect(() => {
+            savedCallback.current = callback; 
+        }, [callback]);
+
+        useEffect(() => {
+            function tick() {
+                savedCallback.current(); 
+            }
+            if (delay !== null) {
+                let id = setInterval(tick, delay);
+                return () => clearInterval(id); 
+            }
+        }, [delay]);
+    }
+    const [time, setTime] = useState(0);
+    const [count, setCount] = useState(0);
+    // useInterval(()=>{
+    //     setTime(time + 1);
+    // },100)
+
+    // if(time > 300){
+    //     setTime(0)
+    //     setDraw(0)
+    //     setCount(count + 1);
+    // }
+
     return <div id="reactHome">
         <div id='stage'>
-            <div id='pointBar'>
-
+            <div id='monster' style={{backgroundImage : `url(../imgs/passer.png)`}}></div>
+            <div id='statusBar'>
+                <p>짹짹이</p>
+                <p id='stamina'></p>
+                <p>
+                    <span>드로우 : {draw}</span>
+                    <span>턴 : {turn}</span>
+                </p>
             </div>
-            <div id='monster' style={{backgroundImage : `url(../imgs/passer.png)`}}>
-                
-            </div>
+        </div>
+        <div id='timeBox'>
+            <div id='timeBar' style={ {marginLeft : `${0 - (time * 0.34) * 13.4}px`}}></div>
         </div>
         <div id='cardHome'>
             <div id='cardBtns'>
@@ -166,21 +201,65 @@ export default function ReactHome(){
                     if(draw >= 5){
                         setDraw(0);
                         cardCheck();
+                        setTurn(turn + 1);
                     }
                 }}></div>
-                <div id='supplyBtn'>
-                    
-                </div>
+                <div id='supplyBtn' onClick={()=>{
+                    if(storage.length > 0){
+                        for(let i = 0; i < storage.length; i++){
+                            temp.push(
+                                <div className="trump" key={uuid()} id={storage[i][1]}
+                                        draggable='true' style={{backgroundImage : `${storage[i][0]}`}}
+                                        name={storage[i][1]}>
+    
+                                </div>
+                            )    
+                        }
+                        console.log(temp)
+                        setCards([...temp]);
+                        setDraw(draw + 1)
+                        dispatch(clearStorage())
+                        console.log(storage)
+                    }
+                }}></div>
+                <div id='shuffleBtn' onClick={()=>{
+                    if((trumps[0].length > 0) || (trumps[1].length > 0) || (trumps[2].length > 0) || (trumps[3].length > 0)){
+                        dispatch(shuffleDeck());
+                        setDraw(draw + 1);
+                    }
+                }}></div>
+                <div className="dropcard" id='trashPosition' onDrop={(event) => {
+                    event.preventDefault();
+                    setDraw(draw + 1);
+                    let parent = dragged.parentNode.getAttribute('id');
+                    if (event.target.classList.contains("dropcard") && draw < 5) {
+                        event.target.classList.remove("dragover")
+                        if(dragged.parentNode.id === ''){
+                            setCards(cards.filter(e => e.props.id !== dragged.id))
+                        }
+                        
+                        if(parent !== null){
+                            dispatch(deleteCard({position : positionD[parent], value : dragged.getAttribute('name')}));
+                        }
+                        dispatch(addCard({position : 4, value :dragged.getAttribute('name'), img : `${dragged.style.backgroundImage}`}));
+                        setDraw(draw + 1);
+                    }
+
+                }}></div>
             </div>
             <div className="dropcard cardPosition" id='firstP' onDrop={(event)=>{
                 event.preventDefault();
+                if(trumps[0].length >= 10){
+                    return
+                }
+
                 let parent = dragged.parentNode.getAttribute('id');
                 if (event.target.classList.contains("dropcard") && draw < 5) {
                     event.target.classList.remove("dragover")
                     if(dragged.parentNode.id === ''){
                         setCards(cards.filter(e => e.props.id !== dragged.id))
                     }
-                    setFirstP([ ...firstP, [dragged.style.backgroundImage, ...dragged.id.split('|')]])
+                    
                     if(parent !== null){
                         dispatch(deleteCard({position : positionD[parent], value : dragged.getAttribute('name')}));
                     }
@@ -192,13 +271,15 @@ export default function ReactHome(){
             </div>
             <div className="dropcard cardPosition" id='secondP' onDrop={(event)=>{
                 event.preventDefault();
+                if(trumps[1].length >= 10){
+                    return
+                }
                 let parent = dragged.parentNode.getAttribute('id');
                 if (event.target.classList.contains("dropcard") && draw < 5) {
                     event.target.classList.remove("dragover")
                     if(dragged.parentNode.id === ''){
                         setCards(cards.filter(e => e.props.id !== dragged.id))
                     }
-                    setSecondP([ ...secondP, [dragged.style.backgroundImage, ...dragged.id.split('|')]])
                     if(parent !== null){
                         dispatch(deleteCard({position : positionD[parent], value :dragged.getAttribute('name')}));
                     }
@@ -210,13 +291,15 @@ export default function ReactHome(){
             </div>
             <div className="dropcard cardPosition" id='threeP' onDrop={(event)=>{
                 event.preventDefault();
+                if(trumps[2].length >= 10){
+                    return
+                }
                 let parent = dragged.parentNode.getAttribute('id');
                 if (event.target.classList.contains("dropcard") && draw < 5) {
                     event.target.classList.remove("dragover")
                     if(dragged.parentNode.id === ''){
                         setCards(cards.filter(e => e.props.id !== dragged.id))
                     }
-                    setThreeP([ ...threeP, [dragged.style.backgroundImage, ...dragged.id.split('|')]])
                     if(parent !== null){
                         dispatch(deleteCard({position : positionD[parent], value :dragged.getAttribute('name')}));
                     }
@@ -228,13 +311,15 @@ export default function ReactHome(){
             </div>
             <div className="dropcard cardPosition" id='fourP' onDrop={(event)=>{
                 event.preventDefault();
+                if(trumps[3].length >= 10){
+                    return
+                }
                 let parent = dragged.parentNode.getAttribute('id');
                 if (event.target.classList.contains("dropcard") && draw < 5) {
                     event.target.classList.remove("dragover")
                     if(dragged.parentNode.id === ''){
                         setCards(cards.filter(e => e.props.id !== dragged.id))
                     }
-                    setFourP([ ...fourP, [dragged.style.backgroundImage, ...dragged.id.split('|')]])
                     if(parent !== null){
                         dispatch(deleteCard({position : positionD[parent], value :dragged.getAttribute('name')}));
                     }

@@ -1,31 +1,79 @@
 #reactHome{
     text-align: center;
-    margin: 0 auto;
     width: 100%;
-    background-image: url(../imgs/back.png);
+    height: 1600px;
+    background-color: #4e4e4e;
     user-select: none;
-    position: absolute;
+    position: fixed;
 }
 
 #stage{
-    margin: 20px auto;
+    margin: 10px auto;
     width: 1340px;
-    height: 400px;
+    height: 370px;
     background-color: white;
     border: 15px solid #202020;
     border-radius: 30px;
     overflow: hidden;
 }
 
-#pointBar{
-    float: left;
-    width: 50px;
-    height: 400px;
-    background-color: rgb(36, 94, 255);
+#statusBar{
+    margin : -360px 10px;
+    width: 220px;
+    height: 100px;
+    border-radius: 10px;
+    border : 10px solid #202020;
+    background-color: #474747;
+    float: right;
+    color: #ffffff;
 }
 
+#statusBar > p{
+    margin: 10px auto 5px;
+}
+
+#stamina{
+    width: 200px;
+    height: 20px;
+    background-color: red;
+}
+
+#statusBar span{
+    margin: 0px 5px;
+    width: 100px;
+    display: block;
+    float: left;
+}
+
+#timeBox{
+    margin: 15px auto;
+    width: 1340px;
+    height: 20px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 10px solid #202020;
+}
+
+#timeBar{
+    border-radius: 5px;
+    width: 1340px;
+    height: 20px;
+    transition: margin-left 0.1s;
+    background-image: url(../imgs/rope.png);
+    animation: 5s timeMove infinite;
+}
+
+@keyframes timeMove {
+    0% {margin-left: 0px;}
+    25% {margin-left: -335px;}
+    50% {margin-left: -670px;}
+    75% {margin-left: -1005px;}
+    100% {margin-left: -1340px;}
+}
+
+
 #monster{
-    margin: 50px auto;
+    margin: 30px auto;
     width: 300px;
     height: 300px;
     background-size: 300px;
@@ -48,7 +96,7 @@
 #cardBtns{
     margin: 30px 5px 30px 20px;
     width: 210px;
-    height: 320px;
+    height: 480px;
     background-image: url(../imgs/back.png);
     float: left;
     border-radius: 15px;
@@ -63,13 +111,17 @@
     transition: all 0.2s;
 }
 
-#supplyBtn{
+#supplyBtn, #shuffleBtn{
     margin: 0px 5px;
     width: 200px;
     height: 150px;
     float: left;
     background-image: url(../imgs/supplyBtn.png);
     transition: all 0.2s;
+}
+
+#shuffleBtn{
+    background-image: url(../imgs/shuffleBtn.png);
 }
 
 #turnBtn:active{
@@ -80,6 +132,20 @@
     background-image: url(../imgs/supplyBtnPress.png);
 }
 
+#shuffleBtn:active{
+    background-image: url(../imgs/shuffleBtnPress.png);
+}
+
+#trashPosition{
+    margin: 30px 5px;
+    float: left;
+    width: 200px;
+    height: 100%;
+    min-height: 100px;
+    background-image: url(../imgs/trashSection.png);
+    background-repeat: no-repeat;
+}
+
 .cardPosition{
     margin: 30px 10px;
     float: left;
@@ -88,7 +154,6 @@
     min-height: 100px;
     background-image: url(../imgs/dropSection.png);
     background-repeat: no-repeat;
-    z-index: 100;
 }
 
 .cardPosition > div{
