@@ -1,68 +1,69 @@
 import './home.css'
+import { useNavigate, Link } from 'react-router-dom'
+import { useState } from 'react';
+import axios from 'axios'
 
 export default function Home(){
+    const navigate = useNavigate();
+    const [popup, setPopup] = useState(false);
 
-    let dragged;
-
-    document.addEventListener('drag', event=>{
-        
-    })
-
-    document.addEventListener('dragstart', event=>{
-        dragged = event.target;
-        event.target.classList.add('dragging');
-    })
-
-    document.addEventListener('dragend', event => {
-        event.target.classList.remove('dragging')
-    })
-
-    document.addEventListener('dragover', event => {
-        event.preventDefault();
-    })
-
-    document.addEventListener('dragenter', event=>{
-        if (event.target.classList.contains("dropzone")) {
-            event.target.classList.add("dragover");
+    const login = async () => {
+        if(document.getElementById('id').value === ''){
+            console.log('id')
+            return
+        } if(document.getElementById('psw').value === ''){
+            console.log('psw')
+            return
         }
-    })
-
-    document.addEventListener('dragleave', event => {
-        if (event.target.classList.contains("dropzone")) {
-            event.target.classList.remove("dragover");
-        }
-    })
-
-    document.addEventListener("drop", event => {
-        event.preventDefault();
-        if (event.target.classList.contains("dropzone")) {
-            event.target.classList.remove("dragover")
-            if(event.target !== dragged){
-                dragged.parentNode.removeChild(dragged);
-                console.log(event.target)
-                event.target.appendChild(dragged);
+        axios.post(`${process.env.REACT_APP_CARD_ROUTER_HOST}login`, {
+            data : {
+                id : document.getElementById('id').value,
+                psw : document.getElementById('psw').value
             }
-        }
-    });
+        }).then(res => {
+            if(res.data !== 'login fail'){
+                navigate('/score', {
+                    state : {
+                        member : res.data
+                    }
+                })
+            }else{
+                setPopup(true);
+            }
+        });
+    }
 
     return <div id="home">
-        <div className="dropzone">
-            <div className='card dropzone' draggable='true'>a</div>
-            <div className='card dropzone' draggable='true'>b</div>
-            <div className='card dropzone' draggable='true'>c</div>
-            <div className='card dropzone' draggable='true'>d</div>
+        <div id='loginPopup' style={{opacity : popup ? '100%' : '0%'}}>
+            아이디또는 비밀번호가 다릅니다.<br/>
+            다시 입력해주세요.<br/>
+            <input type='button' value='확인' onClick={() => {setPopup(false)}}/>
         </div>
-        <div className="dropzone">
-            
+
+        <div id='img'></div>
+        <div className='insertBlock'>
+            ID <input id='id' name='id' type='text'/>
         </div>
-        <div className="dropzone">
-            
+        <div className='insertBlock'>
+            PSW
+            <div className='insertBox'>
+                <input id='psw' name='psw' type='password' onKeyDown={(event) => {
+                    if(event.key === 'Enter'){
+                        login();
+                    }
+                }}/>
+                <input className='typeCh' type='button' onClick={() => {
+                    let target = document.getElementById('psw').type;
+                    if(target === 'password'){
+                        document.getElementById('psw').type = 'text';
+                    }else{
+                        document.getElementById('psw').type = 'password'
+                    }
+
+                }}/>
+            </div>
         </div>
-        <div className="dropzone">
-            
-        </div>
-        <div className="dropzone">
-            
-        </div>
+        <button className='loginBtn' onClick={login}>로그인</button>
+        <Link to='/sign' className='loginBtn'>회원가입</Link>
     </div>
 }

@@ -1,29 +1,64 @@
 import './reactHome.css'
+import './animation.css'
 import { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { addCard, deleteCard, setPositionCardDeck, addStorage, clearStorage, shuffleDeck } from "../cardSlice";
+import { addCard, deleteCard, setPositionCardDeck,
+        addStorage, clearStorage, shuffleDeck, initCard } from "../cardSlice";
 import uuid from 'react-uuid'
+import axios from 'axios';
 
 export default function ReactHome(){
     const dispatch = useDispatch();
+
     const cardDeck = useSelector(state => state.card.cardDeck);
     const cardImage = useSelector(state => state.card.cardImage);
+    
     const storage = useSelector(state => state.card.storage);
+    const monsterData = useSelector(state => state.card.monsterData);
     const [draw, setDraw] = useState(0);
+    const [stage, setStage] = useState(0);
     const [score, setScore] = useState(0);
     const [turn, setTurn] = useState(0);
+    const [drops, setDrops] = useState([]);
+
 
     const [dragged, setDragged] = useState()
     const [parent, setParent] = useState();
 
-    // let dragged;
+
+    const useInterval = (callback, delay) => {
+        const savedCallback = useRef(); 
+
+        useEffect(() => {
+            savedCallback.current = callback; 
+        }, [callback]);
+
+        useEffect(() => {
+            function tick() {
+                savedCallback.current(); 
+            }
+            if (delay !== null) {
+                let id = setInterval(tick, delay);
+                return () => clearInterval(id); 
+            }
+        }, [delay]);
+    }
+    const [time, setTime] = useState(0);
+    useInterval(()=>{
+        setTime(time + 1);
+    }, monsterData.length > stage ? 1000 : null)
+
+    if(time > 30){
+        setTime(0)
+        setDraw(0)
+        setTurn(turn + 1);
+    }
 
     document.addEventListener('drag', event=>{
         
     })
 
     document.addEventListener('dragstart', event=>{
-        // dragged = event.target;
         setDragged(event.target)
         setParent(event.target.parentNode)
         event.target.classList.add('dragging');
@@ -49,7 +84,7 @@ export default function ReactHome(){
         }
     })
 
-    // 판 이미지 제작, 버튼 클릭 시 규칙 파악하기
+    
     const cardCheck = () => {
         let straight = '12345jqk|kqj54321';
         for(let a = 0; a < 4; a++){
@@ -82,7 +117,7 @@ export default function ReactHome(){
                     } if(straight.includes(num) && best <= 2){
                         best = 2
                         bestP = i;
-                    } if(straight.includes(num) && type.length === 1  && best <= 3){
+                    } if(straight.includes(num) && (type.size === 1 || (type.size === 2 && type.has('*'))) && best <= 3){
                         best = 3
                         bestP = i;
                     } if(num.includes('1') && num.includes('2') && joker && temp.size === 2 && best <= 6) {
@@ -100,8 +135,17 @@ export default function ReactHome(){
                         save.push(cardDeck[a][i])
                     }
                     dispatch(addStorage(save));
+                    
                     dispatch(setPositionCardDeck({position : a, deck : modify}));
-                    setScore(score + bestP);
+                    console.log("before : "+stamina)
+                    setStamina(stamina - (best * staminaStep))
+                    console.log("after : "+stamina+"/"+(best * staminaStep))
+                    setScore(score + best);
+                    if(best !== 0){
+                        document.getElementById('monster').click()
+                    }
+                    setTime(0);
+                    // setTimeout 함수 써서 attack변수를 1초간 true로 구현해 볼 것
                 }
                 
                 
@@ -141,63 +185,66 @@ export default function ReactHome(){
         threeP : 2,
         fourP : 3
     }
-    // temp.sort(() => Math.random() - 0.5)
 
+    useDispatch(initCard());
     let temp = [];
-    for(let i = 0; i < cardImage.length; i++){
-        temp.push(
-            <div className="trump" key={uuid()} id={cardImage[i][1] + '|' + cardImage[i][2]}
-                draggable='true' style={{backgroundImage : `url(${cardImage[i][0]})`}}
-                name={cardImage[i][1] + '|' + cardImage[i][2]}>
-
-            </div>
-        )
+    if(temp.length === 0){
+        for(let i = 0; i < cardImage.length; i++){
+            temp.push(
+                <div className="trump" key={`card${i}`} id={cardImage[i][1] + '|' + cardImage[i][2]}
+                    draggable='true' style={{backgroundImage : `url(${cardImage[i][0]})`}}
+                    name={cardImage[i][1] + '|' + cardImage[i][2]}>
+    
+                </div>
+            )
+        }
+        temp.sort(() => Math.random() - 0.5)
     }
+    
+
     const [cards, setCards] = useState([ ...temp ]);
-
-    const useInterval = (callback, delay) => {
-        const savedCallback = useRef(); 
-
-        useEffect(() => {
-            savedCallback.current = callback; 
-        }, [callback]);
-
-        useEffect(() => {
-            function tick() {
-                savedCallback.current(); 
-            }
-            if (delay !== null) {
-                let id = setInterval(tick, delay);
-                return () => clearInterval(id); 
-            }
-        }, [delay]);
+    let staminaStep = 0;
+    if(monsterData.length > stage){
+        if(monsterData[stage].limitTurn <= turn){
+            setStage(stage + 1);
+        }
+        staminaStep = 200 / monsterData[stage].stamina;
     }
-    const [time, setTime] = useState(0);
-    const [count, setCount] = useState(0);
-    useInterval(()=>{
-        setTime(time + 1);
-    },1000)
 
-    if(time > 30){
-        setTime(0)
-        setDraw(0)
-        setCount(count + 1);
+    const [stamina, setStamina] = useState(monsterData.length > stage ? staminaStep * monsterData[stage].stamina : 0);
+
+    const exitGame = async () => {
+        axios.post(`${process.env.REACT_APP_CARD_ROUTER_HOST}exit`)
     }
 
     return <div id="reactHome">
         <div id='stage'>
-            <div id='monster' style={{backgroundImage : `url(../imgs/passer.png)`}}></div>
-            <div id='statusBar'>
-                <p>짹짹이</p>
-                <p id='stamina'></p>
-                <p>
-                    <span>드로우 : {draw}</span>
-                    <span>턴 : {turn}</span>
-                </p>
+        <div key={uuid()}>
+                <div id='monster' style={{backgroundImage : `url(${monsterData[stage].img})`, display : monsterData.length > stage && stamina > 0 ? 'block' : 'none'}} onClick={(event)=>{
+                    if(stamina > 0){
+                        setTimeout(()=>{
+                            document.getElementById('monster').style.animation = `hurt${stage} 0.5s 2`;
+                        }, 100);
+                    }
+                }}></div>
+                <div id='result' style={{display : monsterData.length > stage && stamina > 0 ? 'none' : 'block'}} key={uuid()}>
+                    <p>{stage + 1} 진출!</p>
+                    <p>점수 : {score}</p>
+                    <input type='button' value=''/>
+                </div>
+                <div id='statusBar'style={{display : monsterData.length > stage && stamina > 0 ? 'block' : 'none'}}>
+                    <p>짹짹이</p>
+                    <p id='stamina' style={{width : `${stamina}px`, marginLeft : '10px'}}></p>
+                    <br/>
+                    <p id='subscribe'>
+                        <span>드로우 : {draw}</span>
+                        <span>턴 : {turn}</span>
+                    </p>
+                </div>
             </div>
         </div>
         <div id='timeBox'>
-            <div id='timeBar' style={ {marginLeft : `${0 - (time * 3.4) * 13.4}px`}}></div>
+            <div id='timeBar' style={ {marginLeft : `${0 - (time * 3.4) * 10.4}px`}}></div>
         </div>
         <div id='cardHome'>
             <div id='cardBtns'>
@@ -209,9 +256,10 @@ export default function ReactHome(){
                     }
                 }}></div>
                 <div id='supplyBtn' onClick={()=>{
-                    if(storage.length > 0){
+                    if(storage.length > 0 && (draw === 0 || draw === 5) ){
+                        let supplyTemp = [];
                         for(let i = 0; i < storage.length; i++){
-                            temp.push(
+                            supplyTemp.push(
                                 <div className="trump" key={uuid()} id={storage[i][1]}
                                         draggable='true' style={{backgroundImage : `${storage[i][0]}`}}
                                         name={storage[i][1]}>
@@ -219,17 +267,17 @@ export default function ReactHome(){
                                 </div>
                             )    
                         }
-                        console.log(temp)
-                        setCards([...temp]);
-                        setDraw(draw + 1)
+                        setCards([ ...cards, ...supplyTemp]);
                         dispatch(clearStorage())
                         console.log(storage)
                     }
                 }}></div>
                 <div id='shuffleBtn' onClick={()=>{
-                    if((trumps[0].length > 0) || (trumps[1].length > 0) || (trumps[2].length > 0) || (trumps[3].length > 0)){
-                        dispatch(shuffleDeck());
-                        setDraw(draw + 1);
+                    if(draw < 5){
+                        if((trumps[0].length > 0) || (trumps[1].length > 0) || (trumps[2].length > 0) || (trumps[3].length > 0)){
+                            dispatch(shuffleDeck());
+                            setDraw(draw + 1);
+                        }
                     }
                 }}></div>
                 <div className="dropcard" id='trashPosition' onDrop={(event) => {

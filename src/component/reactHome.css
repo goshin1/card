@@ -1,7 +1,7 @@
 #reactHome{
     text-align: center;
     width: 100%;
-    height: 1600px;
+    height: 100%;
     background-color: #4e4e4e;
     user-select: none;
     position: fixed;
@@ -9,8 +9,8 @@
 
 #stage{
     margin: 10px auto;
-    width: 1340px;
-    height: 370px;
+    width: 1040px;
+    height: 300px;
     background-color: white;
     border: 15px solid #202020;
     border-radius: 30px;
@@ -18,7 +18,7 @@
 }
 
 #statusBar{
-    margin : -360px 10px;
+    margin : -280px 10px;
     width: 220px;
     height: 100px;
     border-radius: 10px;
@@ -28,26 +28,30 @@
     color: #ffffff;
 }
 
-#statusBar > p{
-    margin: 10px auto 5px;
+#subscribe{
+    margin: 0px auto;
+    width: 200px;
+    height: 20px;
 }
 
 #stamina{
-    width: 200px;
+    margin: -5px auto;
+    float: left;
     height: 20px;
+    transition: all 0.2s;
     background-color: red;
 }
 
 #statusBar span{
     margin: 0px 5px;
-    width: 100px;
+    width: 80px;
     display: block;
     float: left;
 }
 
 #timeBox{
     margin: 15px auto;
-    width: 1340px;
+    width: 1040px;
     height: 20px;
     overflow: hidden;
     border-radius: 10px;
@@ -56,7 +60,7 @@
 
 #timeBar{
     border-radius: 5px;
-    width: 1340px;
+    width: 1040px;
     height: 20px;
     transition: margin-left 0.1s;
     background-image: url(../imgs/rope.png);
@@ -64,22 +68,52 @@
 }
 
 
-
-
 #monster{
-    margin: 30px auto;
-    width: 300px;
-    height: 300px;
-    background-size: 300px;
+    margin: 20px auto;
+    width: 250px;
+    height: 250px;
+    background-size: 100%;
     border: 5px solid #202020;
+    animation: hurt 0.5s 1;
+    z-index: 1;
+    background-repeat: no-repeat
 }
 
+#result{
+    margin: 30px auto;
+    width: 300px;
+    height: 220px;
+    border-radius: 20px;
+    border: 5px solid #2e2e2e;
+    background-color: #cfcfcf;
+}
+
+#result > p{
+    padding: 5px 0px 0px; 
+    width: 300px;
+    height: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#result input[type=button]{
+    width: 200px;
+    height: 100px;
+    border: none;
+    background-color: rgba(0,0,0,0);
+    background-image: url(../imgs/mainBtn.png);
+    transition: all 0.2s;
+}
+
+#result input[type=button]:active{
+    background-image: url(../imgs/mainBtnPress.png);
+}
 
 #cardHome{
     text-align: center;
     margin: 0 auto;
-    width: 1340px;
-    height: 680px;
+    width: 1040px;
+    height: 500px;
     user-select: none;
     position: relative;
     background-color: rgb(219, 0, 0);
@@ -88,9 +122,9 @@
 }
 
 #cardBtns{
-    margin: 30px 5px 30px 20px;
-    width: 210px;
-    height: 480px;
+    margin: 15px 5px 30px 20px;
+    width: 160px;
+    height: 450px;
     background-image: url(../imgs/back.png);
     float: left;
     border-radius: 15px;
@@ -98,19 +132,23 @@
 
 #turnBtn{
     margin: 10px 5px 0px;
-    width: 200px;
-    height: 150px;
+    width: 150px;
+    height: 110px;
     float: left;
     background-image: url(../imgs/turnBtn.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
     transition: all 0.2s;
 }
 
 #supplyBtn, #shuffleBtn{
     margin: 0px 5px;
-    width: 200px;
-    height: 150px;
+    width: 150px;
+    height: 110px;
     float: left;
     background-image: url(../imgs/supplyBtn.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
     transition: all 0.2s;
 }
 
@@ -131,78 +169,73 @@
 }
 
 #trashPosition{
-    margin: 30px 5px;
+    margin: 15px 5px;
     float: left;
-    width: 200px;
-    height: 100%;
-    min-height: 100px;
+    width: 150px;
+    height: 76px;
     background-image: url(../imgs/trashSection.png);
-    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 .cardPosition{
-    margin: 30px 10px;
+    margin: 15px 10px;
     float: left;
-    width: 200px;
-    height: 100%;
-    min-height: 100px;
+    width: 150px;
+    height: 76px;
     background-image: url(../imgs/dropSection.png);
+    background-size: 100%;
     background-repeat: no-repeat;
 }
 
 .cardPosition > div{
-    margin: -250px auto;
+    margin: -180px auto;
     box-shadow: 0px 8px 5px rgba(0,0,0,0.3);
 }
 
 .cardPosition > div:first-child{
-    margin: 80px auto 0px;
+    margin: 50px auto 0px;
 }
 
 #cards{
-    margin: 30px 5px;
-    width: 200px;
+    margin: 15px 5px;
+    width: 160px;
     height: 150px;
     float: left;
 }
 
 .deck{
-    width: 200px;
-    height: 300px;
+    width: 150px;
+    height: 225px;
     background-image: url(../imgs/deckSection.png);
+    background-size: 100%;
     float: right;
     text-align: center;
 }
 
 .storage{
     margin-top: 20px;
-    width: 200px;
-    height: 300px;
+    width: 150px;
+    height: 225px;
     background-image: url(../imgs/storageSection.png);
+    background-size: 100%;
     float: right;
     text-align: center;
 }
 
 .deck > div, .storage > div{
-    margin-top: 10px;
+    margin-top: 6px;
     margin-left: 10px;
     position: absolute;
+    z-index: 100;
 }
 
 .trump{
     margin-top: 20px;
-    width: 180px;
-    height: 280px;
-    background-size: 180px 280px; 
+    width: 130px;
+    height: 210px;
+    background-size: 130px 210px; 
     background-position: center;
     background-repeat: no-repeat;
     transition: all 0.2s;
 }
 
-@keyframes hurt {
-    0% { background-image: url(../imgs/passer.png); }
-    25% { background-image: url(../imgs/passerWalk1.png); }
-    50% { background-image: url(../imgs/passerWalk2.png); }
-    75% { background-image: url(../imgs/passerWalk1.png); }
-    100% { background-image: url(../imgs/passer.png); }
-}

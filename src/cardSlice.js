@@ -12,6 +12,9 @@ export const cardSlice = createSlice({
         storage : [
 
         ],
+        deck : [
+
+        ],
         cardImage : [
             ['PNG-cards-1.2/2_of_clubs.png', '2', 'clubs'],
             ['PNG-cards-1.2/2_of_diamonds.png', '2', 'diamonds'],
@@ -47,9 +50,29 @@ export const cardSlice = createSlice({
             ['PNG-cards-1.2/queen_of_hearts2.png', 'q', 'hearts'],
             ['PNG-cards-1.2/queen_of_spades2.png', 'q', 'spades'],
             ['PNG-cards-1.2/red_of_joker.png', '*', 'joker'],
+        ],
+        monsterData : [
+            {
+                "img" : "../imgs/monster/test/passer.png",
+                "stamina" : 30,
+                "limitTurn" : 30
+            }
         ]
     },
     reducers : {
+        initCard : (state, action) =>{
+            let temp = [];
+            for(let i = 0; i < state.cardImage.length; i++){
+                temp.push(
+                    <div className="trump" key={`card${i}`} id={state.cardImage[i][1] + '|' + state.cardImage[i][2]}
+                        draggable='true' style={{backgroundImage : `url(${state.cardImage[i][0]})`}}
+                        name={state.cardImage[i][1] + '|' + state.cardImage[i][2]}>
+        
+                    </div>
+                )
+            }
+            state.deck = [ ...temp ];
+        },
         addCard : (state, action) => {
             let add = action.payload;
             let temp = [...state.cardDeck]
@@ -80,6 +103,7 @@ export const cardSlice = createSlice({
             state.storage = [ ...state.storage, ...action.payload ];
         },
         clearStorage : (state, action) => {
+            state.storage.length = 0;
             state.storage = [];
         },
         shuffleDeck : (state, action) => {
@@ -99,3 +123,4 @@ export const {setPositionCardDeck} = cardSlice.actions;
 export const {addStorage} = cardSlice.actions;
 export const {clearStorage} = cardSlice.actions;
 export const {shuffleDeck} = cardSlice.actions;
+export const {initCard} = cardSlice.actions;
