@@ -1,9 +1,9 @@
-import './reactHome.css'
-import './animation.css'
+import './play.css'
 import { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { addCard, deleteCard, setPositionCardDeck,
         addStorage, clearStorage, shuffleDeck, initCard } from "../cardSlice";
+import { useLocation, useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid'
 import axios from 'axios';
 
@@ -21,6 +21,11 @@ export default function ReactHome(){
     const [turn, setTurn] = useState(0);
     const [drops, setDrops] = useState([]);
 
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    const profile = location.state.profile;
+    
 
     const [dragged, setDragged] = useState()
     const [parent, setParent] = useState();
@@ -121,7 +126,7 @@ export default function ReactHome(){
                         best = 3
                         bestP = i;
                     } if(num.includes('1') && num.includes('2') && joker && temp.size === 2 && best <= 6) {
-                        best = 6
+                        best = 60
                         bestP = i;
                     }
                 }
@@ -154,6 +159,8 @@ export default function ReactHome(){
             }
         }
     }  
+
+    
 
 
     let trumps = [[],[],[],[]];
@@ -214,13 +221,33 @@ export default function ReactHome(){
     const [stamina, setStamina] = useState(monsterData.length > stage ? staminaStep * monsterData[stage].stamina : 0);
 
     const exitGame = async () => {
-        axios.post(`${process.env.REACT_APP_CARD_ROUTER_HOST}exit`)
+        /*
+            profile(id, nickname, levels, score)
+        */
+        console.log(score)
+        axios.post(`${process.env.REACT_APP_CARD_ROUTER_HOST}exit`, {
+            data : {
+                profile : profile,
+                score : score
+            }
+        })
+            .then((res) =>{
+                console.log(res.data)
+                if(res.data !== 'not information'){
+                    console.log(profile)
+                    navigate('/score', {
+                        state : {
+                            member : profile
+                        }
+                    })
+                }
+            });
     }
 
     return <div id="reactHome">
         <div id='stage'>
         <div key={uuid()}>
-                <div id='monster' style={{backgroundImage : `url(${monsterData[stage].img})`, display : monsterData.length > stage && stamina > 0 ? 'block' : 'none'}} onClick={(event)=>{
+                <div id='monster' style={{backgroundImage :  monsterData.length > stage && stamina > 0 ? `url(${monsterData[stage].img})` : '', display : monsterData.length > stage && stamina > 0 ? 'block' : 'none'}} onClick={(event)=>{
                     if(stamina > 0){
                         setTimeout(()=>{
                             document.getElementById('monster').style.animation = `hurt${stage} 0.5s 2`;
@@ -228,9 +255,9 @@ export default function ReactHome(){
                     }
                 }}></div>
                 <div id='result' style={{display : monsterData.length > stage && stamina > 0 ? 'none' : 'block'}} key={uuid()}>
-                    <p>{stage + 1} 진출!</p>
+                    <p>{stage} 진출!</p>
                     <p>점수 : {score}</p>
-                    <input type='button' value=''/>
+                    <input type='button' value='' onClick={exitGame}/>
                 </div>
                 <div id='statusBar'style={{display : monsterData.length > stage && stamina > 0 ? 'block' : 'none'}}>
                     <p>짹짹이</p>
@@ -282,7 +309,6 @@ export default function ReactHome(){
                 }}></div>
                 <div className="dropcard" id='trashPosition' onDrop={(event) => {
                     event.preventDefault();
-                    setDraw(draw + 1);
                     let parentId = parent.getAttribute('id');
                     if (event.target.classList.contains("dropcard") && draw < 5) {
                         event.target.classList.remove("dragover")

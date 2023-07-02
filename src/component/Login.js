@@ -1,4 +1,4 @@
-import './home.css'
+import './login.css'
 import { useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react';
 import axios from 'axios'
@@ -40,7 +40,7 @@ export default function Home(){
             <input type='button' value='확인' onClick={() => {setPopup(false)}}/>
         </div>
 
-        <div id='img'></div>
+        <div id='logoImg'></div>
         <div className='insertBlock'>
             ID <input id='id' name='id' type='text'/>
         </div>

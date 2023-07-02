@@ -97,7 +97,7 @@ export default function Sign(){
         <input type='button' value='확인' onClick={() => {setPopup(-1)}}/>
     </div>
 
-    <div id='img'></div>
+    <div id='logoImg'></div>
     <div className='insertBlock'>
             ID
             <div className='insertBox'>

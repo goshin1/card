@@ -35,6 +35,17 @@
     text-align: center;
 }
 
+#editMove{
+    margin : -25px auto;
+    width: 120px;
+    height: 25px;
+    line-height: 25px;
+    text-decoration: none;
+    color: #fff;
+    float: right;
+    text-align: center;
+}
+
 #listScore{
     padding-top: 20px;
     margin: 20px auto;

@@ -55,7 +55,7 @@ export const cardSlice = createSlice({
             {
                 "img" : "../imgs/monster/test/passer.png",
                 "stamina" : 30,
-                "limitTurn" : 30
+                "limitTurn" : 1
             }
         ]
     },

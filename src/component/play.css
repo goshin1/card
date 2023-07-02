@@ -239,3 +239,13 @@
     transition: all 0.2s;
 }
 
+
+@keyframes drops {
+    0% { width: 130px; height: 210px; }
+    
+    100% { width: 130px; height: 210px; }
+}
+
+.trumpDrop{
+
+}

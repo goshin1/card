@@ -1,5 +1,5 @@
 import './score.css'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { initCard } from '../cardSlice';
@@ -11,14 +11,12 @@ export default function Score(){
     const [scores, setScores] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     useEffect(()=>{
         axios.post(`${process.env.REACT_APP_CARD_ROUTER_HOST}score`)
         .then((res) => {
             let temp = [];
             let length = res.data.length > 10 ? 10 : res.data.length;
             for(let i = 0; i < length; i++){
-                console.log(res.data[i].nickname)
                 temp.push(
                     <div className='scoreBlock' key={`score${i}`}>
                         <div>{i+1}</div>
@@ -37,6 +35,19 @@ export default function Score(){
                 <div>{profile.levels}</div>
                 <div>{profile.nickname}</div>
             </div>
+            <div id='editMove' onClick={async () => {
+                axios.post(`${process.env.REACT_APP_CARD_ROUTER_HOST}selectProfile`, {
+                    data : {
+                        id : profile.id
+                    } 
+                }).then((res) => {
+                    navigate('/edit', {
+                        state : {
+                            profile : res.data
+                        }
+                    })
+                })
+            }}>프로필 수정</div>
         </header>
         <div id='listScore'>
             <div id='scoreTitle'>
