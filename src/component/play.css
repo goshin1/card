@@ -188,12 +188,28 @@
 }
 
 .cardPosition > div{
-    margin: -180px auto;
+    margin: -160px auto;
     box-shadow: 0px 8px 5px rgba(0,0,0,0.3);
 }
 
-.cardPosition > div:first-child{
+.cardPosition > div:nth-child(2){
     margin: 50px auto 0px;
+}
+
+.dropDelete{
+    width: 100px;
+    height: 45px;
+    background-image: url(../imgs/dropPositionBtn.png);
+    background-color: rgba(0,0,0,0);
+    background-size: 100%;
+    position: absolute;
+    margin: -40px -50px;
+    border: none;
+    transition: all 0.2s;
+}
+
+.dropDelete:active{
+    background-image: url(../imgs/dropPositionBtnPress.png);
 }
 
 #cards{
@@ -246,6 +262,3 @@
     100% { width: 130px; height: 210px; }
 }
 
-.trumpDrop{
-
-}

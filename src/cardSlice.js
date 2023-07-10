@@ -55,7 +55,7 @@ export const cardSlice = createSlice({
             {
                 "img" : "../imgs/monster/test/passer.png",
                 "stamina" : 30,
-                "limitTurn" : 1
+                "limitTurn" : 30
             }
         ]
     },
@@ -111,7 +111,17 @@ export const cardSlice = createSlice({
                 state.cardDeck[i].sort(() => Math.random() - 0.5);
             }
             state.cardDeck = [ ...state.cardDeck ]
+        },
+        positionDrop : (state, action) => {
+            state.storage = [ ...state.storage, ...state.cardDeck[action.payload]];
+            state.cardDeck[action.payload] = [];
+        },
+        startGame : (state, action) =>{ 
+            state.storage = [];
+            state.deck = [];
+            state.cardDeck = [[], [], [], []];
         }
+
     }
 })
 
@@ -124,3 +134,5 @@ export const {addStorage} = cardSlice.actions;
 export const {clearStorage} = cardSlice.actions;
 export const {shuffleDeck} = cardSlice.actions;
 export const {initCard} = cardSlice.actions;
+export const {positionDrop} = cardSlice.actions;
+export const {startGame} = cardSlice.actions;

@@ -5,12 +5,11 @@ import axios from 'axios';
 
 export default function Edit(){
     const [popup, setPopup] = useState(-1);
-    const [idch, setIdch] = useState(false);
     
     const navigate = useNavigate();
     const location = useLocation();
     const profile = location.state.profile;
-    console.log(profile)
+    const game = location.state.game;
     
     const idRef = useRef();
     const pswRef = useRef();
@@ -32,7 +31,7 @@ export default function Edit(){
         '이미 있는 아이디입니다.',
         '아이디 중복 확인을 해주세요'
     ];
-
+    console.log(profile)
     const edit = async () => {
         let id = idRef.current.value;
         let psw = pswRef.current.value;
@@ -62,9 +61,6 @@ export default function Edit(){
         } if(phone === ''){
             setPopup(6)
             return
-        } if(!idch){
-            setPopup(9)
-            return
         }
 
         axios.post(`${process.env.REACT_APP_CARD_ROUTER_HOST}updateProfile`, {
@@ -77,7 +73,16 @@ export default function Edit(){
             }
         }).then(res => {
             if(res.data === 'sucess'){
-                navigate('/score')
+                navigate('/score', {
+                    state : {
+                        member : {
+                            id : id,
+                            nickname : name,
+                            levels : game.levels,
+                            score : game.score
+                        }
+                    }
+                })
             }else{
                 setPopup(7);
             }

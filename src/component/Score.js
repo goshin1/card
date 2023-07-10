@@ -1,8 +1,8 @@
 import './score.css'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { initCard } from '../cardSlice';
+import { useDispatch } from 'react-redux';
+import { startGame } from '../cardSlice';
 import axios from 'axios';
 
 export default function Score(){
@@ -43,7 +43,8 @@ export default function Score(){
                 }).then((res) => {
                     navigate('/edit', {
                         state : {
-                            profile : res.data
+                            profile : res.data,
+                            game : profile
                         }
                     })
                 })
@@ -61,7 +62,7 @@ export default function Score(){
             <div id='scoreBtn'>
                 <input type='button' value='' onClick={()=>{
                     
-                    
+                    dispatch(startGame())
                     navigate('/play', {
                         state : {
                             profile

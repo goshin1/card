@@ -2,7 +2,7 @@ import './play.css'
 import { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { addCard, deleteCard, setPositionCardDeck,
-        addStorage, clearStorage, shuffleDeck, initCard } from "../cardSlice";
+        addStorage, clearStorage, shuffleDeck, initCard, positionDrop } from "../cardSlice";
 import { useLocation, useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid'
 import axios from 'axios';
@@ -126,7 +126,7 @@ export default function ReactHome(){
                         best = 3
                         bestP = i;
                     } if(num.includes('1') && num.includes('2') && joker && temp.size === 2 && best <= 6) {
-                        best = 60
+                        best = 10
                         bestP = i;
                     }
                 }
@@ -140,7 +140,9 @@ export default function ReactHome(){
                         save.push(cardDeck[a][i])
                     }
                     dispatch(addStorage(save));
-                    
+                    if(best > 0){
+                        document.getElementById('monster').click();
+                    }
                     dispatch(setPositionCardDeck({position : a, deck : modify}));
                     console.log("before : "+stamina)
                     setStamina(stamina - (best * staminaStep))
@@ -220,7 +222,7 @@ export default function ReactHome(){
 
     const [stamina, setStamina] = useState(monsterData.length > stage ? staminaStep * monsterData[stage].stamina : 0);
 
-    const exitGame = async () => {
+    const exitGame = () => {
         /*
             profile(id, nickname, levels, score)
         */
@@ -232,9 +234,7 @@ export default function ReactHome(){
             }
         })
             .then((res) =>{
-                console.log(res.data)
                 if(res.data !== 'not information'){
-                    console.log(profile)
                     navigate('/score', {
                         state : {
                             member : profile
@@ -247,11 +247,19 @@ export default function ReactHome(){
     return <div id="reactHome">
         <div id='stage'>
         <div key={uuid()}>
-                <div id='monster' style={{backgroundImage :  monsterData.length > stage && stamina > 0 ? `url(${monsterData[stage].img})` : '', display : monsterData.length > stage && stamina > 0 ? 'block' : 'none'}} onClick={(event)=>{
+                <div id='monster' style={{backgroundImage :  monsterData.length > stage && stamina > 0 ? `url(${monsterData[stage].img})` : '', display : monsterData.length > stage && stamina > 0 ? 'block' : 'none'}} 
+                onClick={(event)=>{
                     if(stamina > 0){
                         setTimeout(()=>{
-                            document.getElementById('monster').style.animation = `hurt${stage} 0.5s 2`;
-                        }, 100);
+                            document.getElementById('monster').style.backgroundImage = 'url(../imgs/monster/test/passerWalk1.png)';
+                        },400);
+                        setTimeout(()=>{
+                            document.getElementById('monster').style.backgroundImage = 'url(../imgs/monster/test/passerWalk2.png)';
+                        },200);
+                        setTimeout(()=>{
+                            document.getElementById('monster').style.backgroundImage = 'url(../imgs/monster/test/passerWalk1.png)';
+                        },400);
+                        document.getElementById('monster').style.backgroundImage = 'url(../imgs/monster/test/passer.png)';
                     }
                 }}></div>
                 <div id='result' style={{display : monsterData.length > stage && stamina > 0 ? 'none' : 'block'}} key={uuid()}>
@@ -346,6 +354,12 @@ export default function ReactHome(){
                     setDraw(draw + 1);
                 }
             }}>
+                <button className='dropDelete' onClick={() => {
+                    if(draw < 5){
+                        dispatch(positionDrop(0));
+                        setDraw(5);
+                    }
+                }}></button>
                 {trumps[0]}
             </div>
             <div className="dropcard cardPosition" id='secondP' onDrop={(event)=>{
@@ -366,6 +380,12 @@ export default function ReactHome(){
                     setDraw(draw + 1);
                 }
             }}>
+                <button className='dropDelete' onClick={() => {
+                    if(draw < 5){
+                        dispatch(positionDrop(1));
+                        setDraw(5);
+                    }
+                }}></button>
                 {trumps[1]}
             </div>
             <div className="dropcard cardPosition" id='threeP' onDrop={(event)=>{
@@ -386,11 +406,17 @@ export default function ReactHome(){
                     setDraw(draw + 1);
                 }
             }}>
+                <button className='dropDelete' onClick={() => {
+                    if(draw < 5){
+                        dispatch(positionDrop(2));
+                        setDraw(5);
+                    }
+                }}></button>
                 {trumps[2]}
             </div>
             <div className="dropcard cardPosition" id='fourP' onDrop={(event)=>{
                 event.preventDefault();
-                if(trumps[3].length >= 10){
+                if(trumps[3].length >= 10 || draw > 5){
                     return
                 }
                 let parentId = parent.getAttribute('id');
@@ -406,6 +432,12 @@ export default function ReactHome(){
                     setDraw(draw + 1);
                 }
             }}>
+                <button className='dropDelete' onClick={() => {
+                    if(draw < 5){
+                        dispatch(positionDrop(3));
+                        setDraw(5);
+                    }
+                }}></button>
                 {[...trumps[3]]}
             </div>
 
