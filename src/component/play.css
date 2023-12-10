@@ -1,0 +1,264 @@
+#reactHome{
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    background-color: #4e4e4e;
+    user-select: none;
+    position: fixed;
+}
+
+#stage{
+    margin: 10px auto;
+    max-width: 736px;
+    height: 220px;
+    background-color: white;
+    border: 15px solid #202020;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+#statusBar{
+    margin : -215px 10px;
+    width: 154px;
+    height: 100px;
+    border-radius: 10px;
+    border : 10px solid #202020;
+    background-color: #474747;
+    float: right;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+#subscribe{
+    margin: 0px auto;
+    width: 134px;
+    height: 20px;
+}
+
+#stamina{
+    margin: -5px auto;
+    float: left;
+    height: 20px;
+    transition: all 0.2s;
+    background-color: red;
+}
+
+#statusBar span{
+    margin: 0px 5px;
+    width: 55px;
+    display: block;
+    float: left;
+}
+
+#timeBox{
+    margin: 15px auto;
+    width: 736px;
+    height: 20px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 10px solid #202020;
+}
+
+#timeBar{
+    border-radius: 5px;
+    width: 736px;
+    height: 20px;
+    transition: margin-left 0.1s;
+    background-image: url(../imgs/rope.png);
+    animation: 5s timeMove infinite;
+}
+
+
+#monster{
+    margin: 20px auto;
+    width: 175px;
+    height: 175px;
+    background-size: 100%;
+    border: 5px solid #202020;
+    animation: hurt 0.5s 1;
+    z-index: 1;
+    background-repeat: no-repeat
+}
+
+#result{
+    margin: 30px auto;
+    width: 300px;
+    height: 150px;
+    border-radius: 20px;
+    border: 5px solid #2e2e2e;
+    background-color: #cfcfcf;
+}
+
+#result > p{
+    margin: 2px 0px 5px;
+    padding: 5px 0px 0px; 
+    width: 300px;
+    height: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#result input[type=button]{
+    margin-top: 2px;
+    width: 160px;
+    height: 80px;
+    border: none;
+    background-color: rgba(0,0,0,0);
+    background-image: url(../imgs/mainBtn.png);
+    background-size: 160px 80px;
+    transition: all 0.2s;
+}
+
+#result input[type=button]:active{
+    background-image: url(../imgs/mainBtnPress.png);
+}
+
+#cardHome{
+    text-align: center;
+    margin: 0 auto;
+    width: 736px;
+    height: 500px;
+    user-select: none;
+    position: relative;
+    background-color: rgb(219, 0, 0);
+    border: 15px solid #202020;
+    border-radius: 30px;
+}
+
+#cardBtns{
+    margin: 15px 5px 30px 20px;
+    width: 112px;
+    height: 450px;
+    background-image: url(../imgs/back.png);
+    float: left;
+    border-radius: 15px;
+}
+
+#turnBtn{
+    margin: 10px 5px 0px;
+    width: 105px;
+    height: 80px;
+    float: left;
+    background-image: url(../imgs/turnBtn.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    transition: all 0.2s;
+}
+
+#supplyBtn, #shuffleBtn{
+    margin: 0px 5px;
+    width: 105px;
+    height: 80px;
+    float: left;
+    background-image: url(../imgs/supplyBtn.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    transition: all 0.2s;
+}
+
+#shuffleBtn{
+    background-image: url(../imgs/shuffleBtn.png);
+}
+
+#turnBtn:active{
+    background-image: url(../imgs/turnBtnPress.png);
+}
+
+#supplyBtn:active{
+    background-image: url(../imgs/supplyBtnPress.png);
+}
+
+#shuffleBtn:active{
+    background-image: url(../imgs/shuffleBtnPress.png);
+}
+
+#trashPosition{
+    margin: 15px 5px;
+    float: left;
+    width: 105px;
+    height: 54px;
+    background-image: url(../imgs/trashSection.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.cardPosition{
+    margin: 15px 8px;
+    float: left;
+    width: 105px;
+    height: 55px;
+    background-image: url(../imgs/dropSection.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.cardPosition > div{
+    margin: -120px auto;
+    box-shadow: 0px 8px 5px rgba(0,0,0,0.3);
+}
+
+.cardPosition > div:nth-child(2){
+    margin: 30px auto 0px;
+}
+
+.dropDelete{
+    width: 100px;
+    height: 45px;
+    background-image: url(../imgs/dropPositionBtn.png);
+    background-color: rgba(0,0,0,0);
+    background-size: 100%;
+    position: absolute;
+    margin: -40px -50px;
+    border: none;
+    transition: all 0.2s;
+}
+
+.dropDelete:active{
+    background-image: url(../imgs/dropPositionBtnPress.png);
+}
+
+#cards{
+    margin: 15px 5px;
+    width: 105px;
+    height: 150px;
+    float: right;
+}
+
+.deck{
+    width: 105px;
+    height: 158px;
+    background-image: url(../imgs/deckSection.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    float: right;
+    text-align: center;
+}
+
+.storage{
+    margin-top: 20px;
+    width: 105px;
+    height: 158px;
+    background-image: url(../imgs/storageSection.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    float: right;
+    text-align: center;
+}
+
+.deck > div, .storage > div{
+    margin-top: 6px;
+    margin-left: 8px;
+    position: absolute;
+    z-index: 100;
+}
+
+.trump{
+    margin-top: 20px;
+    width: 90px;
+    height: 150px;
+    background-size: 100% 100%; 
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.2s;
+}
+

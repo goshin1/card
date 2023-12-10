@@ -1,0 +1,7 @@
+@keyframes hurt0 {
+    0% { background-image: url(../imgs/passer.png); background-position: 0px 30px;}
+    25% { background-image: url(../imgs/passerWalk1.png);background-position: 0px 0px; }
+    50% { background-image: url(../imgs/passerWalk2.png); background-position: 0px 30px;}
+    75% { background-image: url(../imgs/passerWalk1.png); background-position: 0px 0px;}
+    100% { background-image: url(../imgs/passer.png); background-position: 0px 30px;}
+}

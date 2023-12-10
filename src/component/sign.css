@@ -1,0 +1,32 @@
+
+
+
+#signPopup{
+    color: #ffffff;
+    margin: 10% 41%;
+    padding: 30px 50px;
+    width: 250px;
+    
+    line-height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    position: absolute;
+    background-color: #414141;
+    box-shadow: 1px 1px 10px #242424;
+    transition: all 0.2s;
+}
+
+#signPopup input[type=button]{
+    margin: 20px auto;
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    transition: all 0.2s;
+    }
+
+#signPopup input[type=button]:active{
+    font-size: 15px;
+}

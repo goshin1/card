@@ -1,0 +1,186 @@
+#score{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #242424;
+}
+
+#score header{
+    margin: 20px auto 10px;
+    max-width: 500px;
+    width: 100%;
+}
+
+#profile{
+    margin: 0 10px;
+    max-width: 200px;
+    width: 30%;
+    height: 30px;
+    background-image: url(../imgs/profile.png);
+    background-size: 100% 100%;
+    font-size: 0.9em;
+}
+
+#profile div:nth-child(1){
+    width: 30%;
+    height: 30px;
+    line-height: 27px;
+    float: left;
+    text-align: center;
+}   
+
+#profile div:nth-child(2){
+    width: 70%;
+    height: 30px;
+    line-height: 25px;
+    float: right;
+    text-indent: 5px;
+    text-align: center;
+}
+
+#editMove{
+    margin : -25px auto;
+    width: 120px;
+    height: 25px;
+    line-height: 25px;
+    text-decoration: none;
+    color: #fff;
+    float: right;
+    text-align: center;
+    cursor: pointer;
+}
+
+#listScore{
+    padding-top: 5px;
+    margin: 20px auto;
+    max-width: 550px;
+    max-height: 800px;
+    width: 90%;
+    height: 80%;
+    border-radius: 30px;
+    position: relative;
+    background-image: url(../imgs/scoreBoard.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+#scoreBox{
+    margin: 20px auto;
+    max-width: 450px;
+    width: 85%;
+    height: 55%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#scoreBox::-webkit-scrollbar{
+    width: 25px;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#scoreBox::-webkit-scrollbar-track{
+    background-image: url(../imgs/scrollTrack.png);
+    background-size: 25px 100%;
+    background-repeat: no-repeat;
+}
+
+#scoreBox::-webkit-scrollbar-thumb{
+    width: 25px;
+    height: auto;
+    background-image: url(../imgs/scrollThumb.png);
+    background-size: 20px 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+.scoreBlock{
+    margin: 10px auto;
+    max-width: 450px;
+    width: 100%;
+    height: 15%;
+    min-height: 30px;
+    overflow: hidden;
+    word-break: break-all;
+    white-space: pre-line;
+    background-image: url(../imgs/scoreBlock.png);
+    background-size: 100% 100%; 
+    background-repeat: no-repeat;
+    box-shadow: 0px 0px 20px #242424;
+    font-weight: bold;
+    color: #303030;
+}
+
+.scoreBlock div{
+    word-break: break-all;
+    height: 80%;
+    padding-top: 4%;
+    font-size: 100%;
+    float: left;
+}
+
+
+.scoreBlock div:nth-child(1){
+    width: 15%;
+    text-align: center;
+}
+
+.scoreBlock div:nth-child(2){
+    width: 50%;
+    word-break: break-all;
+    text-align: center;
+}
+
+.scoreBlock div:nth-child(3){
+    width: 30%;
+    text-align: center;
+}
+
+#scoreTitle{
+    margin: 30px auto -20px;
+    max-width: 450px;
+    width: 85%;
+    height: 50px;
+    line-height: 50px;
+    background-image: url(../imgs/scoreTitle.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    box-shadow: 0px 0px 20px #242424;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #222222;
+}
+
+#scoreBtn{
+    max-width: 450px;
+    max-height: 180px;
+    width: 85%;
+    height: 20%;
+    margin: 0px auto;
+    background-image: url(../imgs/scoreBtn.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position: relative;
+    padding: 5px 0px; 
+}
+
+#scoreBtn > input[type=button]{
+    margin: 10px auto;
+    width: 40%;
+    height: 80%;
+    min-width: 140px;
+    min-height: 100px;
+    border: none;
+    display: block;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url(../imgs/startBtn.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    transition: all 0.2s;
+}   
+
+#scoreBtn input[type=button]:active{
+    background-image: url(../imgs/startBtnPress.png);
+}

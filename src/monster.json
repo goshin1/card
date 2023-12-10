@@ -1,0 +1,14 @@
+{
+    "stage1" : {
+        "img" : "../imgs/monster/test/passer.png",
+        "animation" : "",
+        "stamina" : 30,
+        "limitTurn" : 3
+    },
+    "stage2" : {
+        "img" : "../imgs/monster/test/passer.png",
+        "animation" : "",
+        "stamina" : 2000,
+        "limitTurn" : 3
+    }
+}
