@@ -28,7 +28,7 @@
 
 
 ### 게임화면
-![게임화면](src/introduce/playHome.PNG)<br/><br/>
+![게임화면](src/introduce/gameHome.PNG)<br/><br/>
 
 ### 카드 게임 규칙
 - 카드는 한턴에 최대 5장 뽑을 수 있다.
